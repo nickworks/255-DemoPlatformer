@@ -2,6 +2,7 @@
 	
 	import flash.display.MovieClip;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 	
 	
 	public class Player extends MovieClip {
@@ -21,10 +22,25 @@
 		public function update():void {
 			
 			
-			if(KeyboardInput.keyLeft) velocity.x -= HORIZONTAL_ACCELERATION * Time.dt;
-			if(KeyboardInput.keyRight) velocity.x += HORIZONTAL_ACCELERATION * Time.dt;
+			if(KeyboardInput.OnKeyDown(Keyboard.SPACE)){
+				trace("jump");
+			}
 			
-			if(!KeyboardInput.keyLeft && !KeyboardInput.keyRight){ // left and right not being pressed...
+			
+			handleWalking();
+			doPhysics();			
+			detectGround();
+			
+		}
+		/**
+		 * This function looks at the keyboard input in order to accelerate the player
+		 * left or right. As a result, this function changes the player's velocity.
+		 */
+		private function handleWalking():void {
+			if(KeyboardInput.IsKeyDown(Keyboard.LEFT)) velocity.x -= HORIZONTAL_ACCELERATION * Time.dt;
+			if(KeyboardInput.IsKeyDown(Keyboard.RIGHT)) velocity.x += HORIZONTAL_ACCELERATION * Time.dt;
+			
+			if(!KeyboardInput.IsKeyDown(Keyboard.LEFT) && !KeyboardInput.IsKeyDown(Keyboard.RIGHT)){ // left and right not being pressed...
 				if(velocity.x < 0){ // moving left
 					velocity.x += HORIZONTAL_DECELERATION * Time.dt; // accelerate right
 					if(velocity.x > 0) velocity.x = 0; // clamp at 0
@@ -34,10 +50,6 @@
 					if(velocity.x < 0) velocity.x = 0; // clamp at 0
 				}
 			}
-			
-			doPhysics();
-			
-			detectGround();
 			
 		}
 		private function doPhysics():void {
