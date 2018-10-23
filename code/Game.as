@@ -8,6 +8,7 @@
 		
 		
 		public function Game() {
+			KeyboardInput.setup(stage);
 			addEventListener(Event.ENTER_FRAME, gameLoop);
 		}
 		private function gameLoop(e:Event):void {
