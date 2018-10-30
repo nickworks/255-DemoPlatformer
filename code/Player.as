@@ -25,8 +25,11 @@
 		
 		private var jumpVelocity:Number = 400;
 		
+		public var collider:AABB;
+		
 		public function Player() {
-			// constructor code
+			collider = new AABB(width/2, height/2);
+			
 		} // ends constructor
 		
 		public function update():void {
@@ -36,6 +39,7 @@
 			doPhysics();			
 			detectGround();
 			
+			collider.calcEdges(x, y);
 		}
 		/**
 		 * This function looks at the keyboard input in order to accelerate the player
