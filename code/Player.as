@@ -36,10 +36,11 @@
 			
 			handleJumping();
 			handleWalking();
-			doPhysics();			
-			detectGround();
+			doPhysics();
+			//detectGround();
 			
 			collider.calcEdges(x, y);
+			isGrounded = false; // this allows us to walk off of edges and no longer be "grounded"
 		}
 		/**
 		 * This function looks at the keyboard input in order to accelerate the player
@@ -108,6 +109,23 @@
 				y = ground; // clamp
 				velocity.y = 0;
 			}
+		}
+		
+		public function applyFix(fix:Point):void {
+			if(fix.x != 0){
+				x += fix.x;
+				velocity.x = 0;
+				// onWall = true;
+			}
+			if(fix.y != 0){
+				y += fix.y;
+				velocity.y = 0;
+			}
+			if(fix.y < 0){ // we moved the player UP, so they are on the ground
+				isGrounded = true;
+				airJumpsLeft = airJumpsMax;
+			}
+			collider.calcEdges(x, y);
 		}
 		
 		
